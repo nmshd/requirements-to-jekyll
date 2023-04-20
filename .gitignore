@@ -1,3 +1,8 @@
 _docs_use/scenarios-generated/*
+!_docs_use/scenarios-generated/.gitkeep
+
 _docs_explore/use-cases-generated/*
+!_docs_explore/use-cases-generated/.gitkeep
+
 *.csv
+generate
