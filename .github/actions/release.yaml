@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Vlang
+        uses: vlang/setup-v@v1.3
+      - run: v -o generate generate.v
+      - run: v -o generate.exe generate.v -os windows
+      - uses: actions/upload-artifact@v2
+        with:
+          name: genrate-windows
+          path: generate.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: generate-linux
+          path: generate
+
+  release-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Vlang
+        uses: vlang/setup-v@v1.3
+      - run: v -o generate generate.v
+      - uses: actions/upload-artifact@v2
+        with:
+          name: generate-mac
+          path: generate
