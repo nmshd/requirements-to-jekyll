@@ -18,7 +18,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: gernerate.exe
+          file: generate.exe
           asset_name: generate-windows
           tag: ${{ github.ref }}
           overwrite: false
@@ -26,7 +26,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: gernerate
+          file: generate
           asset_name: generate-linux
           tag: ${{ github.ref }}
           overwrite: false
@@ -42,7 +42,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: gernerate
+          file: generate
           asset_name: generate-macos
           tag: ${{ github.ref }}
           overwrite: false
