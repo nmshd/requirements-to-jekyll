@@ -3,35 +3,46 @@ name: Release
 on:
   release:
     types: [published]
-  push:
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Vlang
         uses: vlang/setup-v@v1.3
       - run: sudo apt-get install gcc-mingw-w64-x86-64
       - run: v -o generate generate.v
       - run: v -o generate.exe generate.v -os windows
-      - uses: actions/upload-artifact@v2
+      - name: Upload binary to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: genrate-windows
-          path: generate.exe
-      - uses: actions/upload-artifact@v2
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: gernerate.exe
+          asset_name: generate-windows
+          tag: ${{ github.ref }}
+          overwrite: false
+      - name: Upload binary to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: generate-linux
-          path: generate
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: gernerate
+          asset_name: generate-linux
+          tag: ${{ github.ref }}
+          overwrite: false
 
   release-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Vlang
         uses: vlang/setup-v@v1.3
       - run: v -o generate generate.v
-      - uses: actions/upload-artifact@v2
+      - name: Upload binary to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: generate-mac
-          path: generate
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: gernerate
+          asset_name: generate-macos
+          tag: ${{ github.ref }}
+          overwrite: false
