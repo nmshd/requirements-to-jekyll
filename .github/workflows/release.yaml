@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup Vlang
         uses: vlang/setup-v@v1.3
+      - run: apt-get install gcc-mingw-w64-x86-64
       - run: v -o generate generate.v
       - run: v -o generate.exe generate.v -os windows
       - uses: actions/upload-artifact@v2
