@@ -4,6 +4,9 @@ The use cases and scenarios are listed in an Excel table. This list is extracted
 
 A detailed description for the application can be added.
 
+## Installation
+Download the source code and the generate file for the appropriate operating system from the releases.
+
 ## Reading data from the excel table
 
 1. For each Page: save the pages to be exported as a .csv file with ";" as a delimiter.
