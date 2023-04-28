@@ -1,33 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
 
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
+<!-- here is the description in detail  -->
 
-Create the Relationship Template on the Templator's Connector. You can do so by calling the `POST /api/v2/RelationshipTemplates/Own` route. Use the following JSON in the Request body:
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
 
-```jsonc
-{
-  "maxNumberOfAllocations": 1,
-  "expiresAt": "2023-06-01T00:00:00.000Z",
-  "content": {
-    "@type": "RelationshipTemplateContent",
-    "title": "Connector Demo Contact",
-    "onNewRelationship": {
-      // the content property of the payload in the step before
-    }
-  }
-}
-```
+<!-- detailed information about integration and development can be found in this chapter  -->
 
-You will receive a response with the complete RelationshipTemplate.
+# Developer Corner
 
-{% include copy-notice description="Save the `truncatedReference` and the `id` of the RelationshipTemplate. You will need them in the next steps." %}
-
-```jsonc
-{
-  "id": "RLT..",
-  // ...
-  "truncatedReference": "UkxU..."
-}
-```
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>

@@ -1,95 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
+
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
+<!-- here is the description in detail  -->
 
-The rejection is explained before the acceptance because you can re-do it as often if you want. If you accept the Request a RelationshipRequest will be sent and no new Request will be created until the RelationshipRequest is answered. If the RelationshipRequest is accepted the Enmeshed Runtime will recognize the existing Relationship and will also not create a new Request.
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
 
-So if you want to test the full flow, you should first reject the Request. After that you can create a new one, which you can accept.
+<!-- detailed information about integration and development can be found in this chapter  -->
 
-If there is no open RelationshipRequest or existing Relationship, you can trigger the creation of a new Request by [loading the Template again](#load-the-template-and-get-the-request) with the same truncated reference.
+# Developer Corner
 
-### Reject
-
-If you want to reject the Request you can do so by calling the `POST /api/v2/Requests/Incoming/{id}/Reject` route. You can use the `id` you saved in the previous step. In the payload you have to reject all RequestItems. In case of the example Request the payload is the following:
-
-```jsonc
-{
-  "items": [
-    {
-      "accept": false
-    }
-  ]
-}
-```
-
-In the response you can see the Request has moved to status `Decided`. This is where the Enmeshed Runtime steps in and handles the Request based on you decision. Because you rejected the Request, the Enmeshed Runtime will only move the Request to status completed. This behavior can be observed by querying the Request again after a few seconds (`GET /api/v2/Requests/Incoming/{id}`).
-
-### Accept
-
-If you tried out the Rejection before this step make sure to create a Request by [loading the Template again](#load-the-template-and-get-the-request) with the same truncated reference.
-
-If you want to accept the Request you can do so by calling the `POST /api/v2/Requests/Incoming/{id}/Accept` route. You can use the `id` you saved in the [template loading](#load-the-template-and-get-the-request) step. In the payload you have to accept at least all RequestItems where the `mustBeAccepted` property is set to `true`. In case of the example Request the payload is the following:
-
-```jsonc
-{
-  "items": [
-    {
-      "accept": true
-    }
-  ]
-}
-```
-
-In the response you can see the Request has moved to status `Decided`. This is where the Enmeshed Runtime steps in and handles the Request based on you decision. Because you accepted the Request, the Enmeshed Runtime will send your Response to the Templator by creating a Relationship. This behavior can be observed by querying the Request again after a few seconds (`GET /api/v2/Requests/Incoming/{id}`). When the Request is in status `Completed` you can query the created Relationship (`GET /api/v2/Relationships`, query parameter `template.id=<id-of-the-template>`).
-
-If you synchronize the Templator Connector (`POST /api/v2/Account/Sync`) you will see a new Relationship in the response. The Relationship looks as follows:
-
-```jsonc
-{
-  "id": "REL...",
-  "template": {
-    // ...
-  },
-  "status": "Active",
-  "peer": "id1...",
-  // ...
-  "changes": [
-    {
-      "id": "RCH...",
-      "request": {
-        "createdBy": "id1...",
-        "createdByDevice": "DVC...",
-        "createdAt": "2022-11-04T13:31:01.360Z",
-        "content": {
-          "@type": "RelationshipCreationChangeRequestContent",
-          "response": {
-            "items": [
-              {
-                "@type": "AcceptResponseItem",
-                "result": "Accepted"
-              }
-            ],
-            "requestId": "REQ...",
-            "result": "Accepted"
-          }
-        }
-      },
-      "status": "Accepted",
-      "type": "Creation"
-      // ...
-    }
-  ]
-}
-```
-
-Pay particular attention to the `changes.0.request.content` property that contains the Response that was generated by the Enmeshed Runtime.
-
-Now you can accept the Relationship on the Templator Connector by calling the `PUT /api/v2/Relationships/{relationshipId}/Changes/{changeId}/Accept` route.
-
-When you synchronize the Requestor Connector (`POST /api/v2/Account/Sync`) you can see that the Relationship is now in status `Active` on both Connectors.
-
-
-### Runtime automation
-
-No matter if you accepted or rejected the Request: the response is similar. You can see that the Request moved to status `Decided`. This is where the Enmeshed Runtime steps in and handles the Request based on you decision. It will move the Request to status `Completed` and send the Response to the Sender via a Message. This behavior can be observed by querying the Request again after a few seconds (`GET /api/v2/Requests/Incoming/{id}`).
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>

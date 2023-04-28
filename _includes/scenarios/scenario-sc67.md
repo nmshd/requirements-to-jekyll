@@ -1,39 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
+
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
-To create the Request you have to call the `POST /api/v2/Requests/Outgoing` route on the Sender Connector. Use the following JSON in the Request body:
+<!-- here is the description in detail  -->
 
-```jsonc
-{
-  "content": {
-    // the content property of the payload in the step before
-  },
-  "peer": "<the address of the Recipient Connector>"
-}
-```
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
 
-Note that the Request is currently in status `Draft`.
+<!-- detailed information about integration and development can be found in this chapter  -->
 
-{% include copy-notice description="Save the complete `content` of the response. You will need it in the next step." %}
+# Developer Corner
 
-**Example response:**
-
-```jsonc
-{
-  "id": "REQ...",
-  "status": "Draft",
-  // ...
-  "content": {
-    "@type": "Request",
-    "id": "REQ...",
-    "items": [
-      {
-        "@type": "AuthenticationRequestItem",
-        "mustBeAccepted": true,
-        "title": "The Sender is asking for an authentication"
-      }
-    ]
-  }
-}
-```
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>

@@ -1,27 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
+
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
-At first you should check if your Request is valid. You can do this by calling the `POST /api/v2/Requests/Outgoing/Validate` route on the Templator Connector with the following body.
-For simplicity the Request inside the Template only contains an AuthenticationRequestItem, but you can use any [RequestItems]({% link _docs_integrate/62-request-items.md %}) you want.
+<!-- here is the description in detail  -->
 
-Even though the `peer` property is optional, it is recommended to specify it whenever possible. This allows additional validation rules to execute. When you are sending a Request over Messages you always know your peer.
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
 
-```json
-{
-  "content": {
-    "items": [
-      {
-        "@type": "AuthenticationRequestItem",
-        "mustBeAccepted": true,
-        "title": "The Sender is asking for an authentication"
-      }
-    ]
-  },
-  "peer": "<the address of the Recipient Connector>"
-}
-```
-```
+<!-- detailed information about integration and development can be found in this chapter  -->
 
-Even though the Requests are validated during the RelationshipTemplate creation you should not skip this step as it gives you additional information in case of validation errors.
-{: .notice--info}
+# Developer Corner
+
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>

@@ -101,7 +101,7 @@ fn scenarios_func(app cli.Command) ! {
 			f.write_string(template_file) or { panic('error writing file /scenarios/scenario-' + optimized_filename + '.md') }
 			f.close()
 		}
-		text += '{% include scenarios/scenario-' + optimized_filename + '.md %}'
+		text += '\n{% include scenarios/scenario-' + optimized_filename + '.md %}'
 		mut tmp_filename := './_docs_use/scenarios-generated/scenario-' + optimized_filename + '.md'
 		mut f := os.create(tmp_filename)!
 		f.write_string(text) or { panic('error writing file ${filename}') }
@@ -180,7 +180,7 @@ fn use_cases_func(app cli.Command) ! {
 			f.write_string(template_file) or { panic('error writing file /use-cases/use-case-' + optimized_filename + '.md') }
 			f.close()
 		}
-text += '{% include use-cases/use-case-' + optimized_filename + '.md %}'
+text += '\n{% include use-cases/use-case-' + optimized_filename + '.md %}'
 		mut tmp_filename := './_docs_explore/use-cases-generated/use-case-' + optimized_filename +
 			'.md'
 		mut f := os.create(tmp_filename)!

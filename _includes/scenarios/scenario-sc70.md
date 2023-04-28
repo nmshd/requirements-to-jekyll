@@ -1,7 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
+
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
-The Sender will receive the Response as a Message. Therefore you have to synchronize the Sender Connector (`GET /api/v2/Account/Sync`).
+<!-- here is the description in detail  -->
 
-After a few seconds the Request has moved to status `Completed` and the Response is available in the `response` property of the Request. You can observe this by querying the Request via `GET /api/v2/Requests/Outgoing/{id}` on the Sender Connector.
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
+
+<!-- detailed information about integration and development can be found in this chapter  -->
+
+# Developer Corner
+
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>

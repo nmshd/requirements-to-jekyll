@@ -1,19 +1,21 @@
+<!-- A general description of the requirement can be given here. -->
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptas deserunt alias accusantium rem? Quaerat, temporibus alias fuga rerum unde dolor blanditiis quia incidunt modi rem, sequi, esse aut accusamus.
+
 <!-- This include inserts the table with the metadata  -->
 
 {% include properties_list.html %}
 
-Now you have to load the Template on the Requestor Connector. You can do so by calling the `POST /api/v2/RelationshipTemplates/Peer` route with the following content. Use the `truncatedReference` you copied before:
+<!-- here is the description in detail  -->
 
-```jsonc
-{
-  "reference": "UkxU..."
-}
-```
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam blanditiis optio nulla quidem tempore sapiente nam, molestiae et voluptas ab harum quo incidunt reiciendis dolorum sed eligendi quos in itaque vel facilis. Rerum quia asperiores porro, odit laborum error voluptates repellat repellendus doloribus minima voluptate debitis libero nemo sit, dolorem consequatur expedita architecto! Molestiae, quae maxime ut iste ratione veniam velit asperiores. Earum corrupti architecto molestiae necessitatibus ullam modi beatae optio distinctio et labore, consectetur, repudiandae alias recusandae quas delectus placeat error laudantium quos, autem non nemo cum. Obcaecati iure maiores quas temporibus assumenda, qui veritatis necessitatibus.
 
-If no Relationship exists, this will trigger a process in the Enmeshed Runtime. It will create a new incoming Request on which we will work in the next step. You can observe this by long polling the incoming Requests or by waiting for the `consumption.incomingRequestReceived` event.
+<!-- detailed information about integration and development can be found in this chapter  -->
 
-The long polling is done by calling the `GET /api/v2/Requests/Incoming` route. You can use the query params `source.reference=<id-of-the-template>` and `status=ManualDecisionRequired` to filter for Requests that belong to the Template you are currently working on.
+# Developer Corner
 
-For more information about the events you can head over to the [Connector Modules site]({% link _docs_integrate/03-connector-modules.md %}) and read about the [AMQP Publisher module]({% link _docs_integrate/03-connector-modules.md %}#amqppublisher) and the [WebhooksV2 module]({% link _docs_integrate/03-connector-modules.md %}#webhooksv2) that are propagating events.
-
-{% include copy-notice description="After you received the Request, save its `id` for the next step." %}
+<!-- How to import a graphic stored in the include folder -->
+<details >
+  <summary>Flowchart</summary>
+  <div>{% include diagrams/Enmeshed_Scenarios.svg %}</div>
+</details>
