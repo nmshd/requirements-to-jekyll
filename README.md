@@ -23,9 +23,7 @@ In the appropriate folder ( e.g.: use-cases-gernerated) the jekyll files are cre
 
 ## Add description of the requirements 
 
-The description of the requirements must be written in markdown and located in the folder of the corresponding requirement (e.g.: use-cases).
-
-There is a template in the folder that you can use as a guide.
+description must be written in the documentation repository. When a new requirement is generated, a template file is created for it in the _include folder. The template looks like this:
 
 ```htm
 <!-- A general description of the requirement can be given here. -->
@@ -48,15 +46,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nihil sequi ipsam 
 
 ```
 
-1. Copy the template or create a new file, with the same name as the name in the e.g.: use-cases-generated folder
-
-2. Customize the file as desired. It is important not to forget the include table for the metadata. 
-
-3. run ./generate with the command for the requirement. e.g.:
-
-```
-./generate use-cases
-```
+1. Copy the new generated template to the _include folder in the documentation repository
 
 ## Use the default template
 

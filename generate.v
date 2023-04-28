@@ -49,6 +49,8 @@ fn scenarios_func(app cli.Command) ! {
 	column_require := get_columnn_id_by_title('require', header)
 	column_published := get_columnn_id_by_title('published', header)
 	column_id := get_columnn_id_by_title('id', header)
+	column_nbp_scenario := get_columnn_id_by_title('nbp_scenario', header)
+	template_file := os.read_file('_docs_use/scenarios-generated/_template.md') !
 	for {
 		row := parser.read() or { break }
 		j = find_title_in_array(name_list, row[column_title])
@@ -56,8 +58,7 @@ fn scenarios_func(app cli.Command) ! {
 		// mut optimized_filename := row[column_title].to_lower().replace_each([' ','_','<','','>','',':',' ','/',''])
 		mut optimized_filename := row[column_id].to_lower()
 		text += 'permalink: /use/scenario-' + optimized_filename + '\n'
-		if os.exists('_docs_use/scenarios/scenario-' + optimized_filename + '.md')
-			|| row[column_published].contains('default') {
+		if row[column_published].contains('true')  {
 			text += 'published: true\n'
 			description_counter++
 		} else {
@@ -69,7 +70,7 @@ fn scenarios_func(app cli.Command) ! {
 		text += 'type: scenario\n'
 		text += 'properties:\n'
 		for i, cell in row {
-			if i != column_title && i != column_require {
+			if i != column_title && i != column_require && i != column_nbp_scenario {
 				if cell != '' {
 					text += '  - ' + header[i].to_lower() + ': ' +
 						cell.replace_each(['<', '', '>', '', ':', '', '\n', ' ', '`', "'"]) + '\n'
@@ -95,11 +96,12 @@ fn scenarios_func(app cli.Command) ! {
 			}
 		}
 		text += '---\n'
-		if os.exists('_docs_use/scenarios/scenario-' + optimized_filename + '.md') {
-			text += "\n" + os.read_file('_docs_use/scenarios/scenario-' + optimized_filename + '.md')!
-		} else if row[column_published].contains('default') {
-			text += "\n" + os.read_file('_docs_use/scenarios/_default.md')!
+		if !os.exists('_includes/scenarios/scenario-' + optimized_filename + '.md') {
+			mut f := os.create('_includes/scenarios/scenario-' + optimized_filename + '.md')!
+			f.write_string(template_file) or { panic('error writing file /scenarios/scenario-' + optimized_filename + '.md') }
+			f.close()
 		}
+		text += '{% include scenarios/scenario-' + optimized_filename + '.md %}'
 		mut tmp_filename := './_docs_use/scenarios-generated/scenario-' + optimized_filename + '.md'
 		mut f := os.create(tmp_filename)!
 		f.write_string(text) or { panic('error writing file ${filename}') }
@@ -125,6 +127,8 @@ fn use_cases_func(app cli.Command) ! {
 	column_require := get_columnn_id_by_title('require', header)
 	column_published := get_columnn_id_by_title('published', header)
 	column_id := get_columnn_id_by_title('id', header)
+		template_file := os.read_file('_docs_explore/use-cases-generated/_template.md') !
+
 	for {
 		row := parser.read() or { break }
 		mut text := '---\n'
@@ -171,11 +175,12 @@ fn use_cases_func(app cli.Command) ! {
 			}
 		}
 		text += '---\n'
-		if os.exists('_docs_explore/use-cases/use-case-' + optimized_filename + '.md') {
-			text += "\n" + os.read_file('_docs_explore/use-cases/use-case-' + optimized_filename + '.md')!
-		} else if row[column_published].contains('default') {
-			text += "\n" + os.read_file('_docs_explore/use-cases/_default.md')!
+				if !os.exists('_includes/use-cases/use-case-' + optimized_filename + '.md') {
+			mut f := os.create('_includes/use-cases/use-case-' + optimized_filename + '.md')!
+			f.write_string(template_file) or { panic('error writing file /use-cases/use-case-' + optimized_filename + '.md') }
+			f.close()
 		}
+text += '{% include use-cases/use-case-' + optimized_filename + '.md %}'
 		mut tmp_filename := './_docs_explore/use-cases-generated/use-case-' + optimized_filename +
 			'.md'
 		mut f := os.create(tmp_filename)!
