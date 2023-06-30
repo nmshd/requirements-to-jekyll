@@ -10,6 +10,12 @@ struct TypeObject {
 	my_type string
 }
 
+struct Navbar {
+mut:
+	navbar  []string
+	keylist []string
+}
+
 fn main() {
 	mut app := cli.Command{
 		name: 'md_generator'
@@ -50,27 +56,60 @@ fn scenarios_func(app cli.Command) ! {
 	column_published := get_columnn_id_by_title('published', header)
 	column_id := get_columnn_id_by_title('id', header)
 	column_nbp_scenario := get_columnn_id_by_title('nbp_scenario', header)
-	template_file := os.read_file('_docs_use/scenarios-generated/_template.md') !
+	column_jira := get_columnn_id_by_title('link to jira', header)
+	column_redirect := get_columnn_id_by_title('redirect_from', header)
+	column_category := get_columnn_id_by_title('category', header)
+	column_component := get_columnn_id_by_title('component', header)
+	template_file := os.read_file('_requirements/_docs_scenarios/_template.md')!
+	mut navbar_use := Navbar{}
+	mut navbar_integrate := Navbar{}
+	mut navbar_operate := Navbar{}
 	for {
 		row := parser.read() or { break }
 		j = find_title_in_array(name_list, row[column_title])
 		mut text := '---\n'
 		// mut optimized_filename := row[column_title].to_lower().replace_each([' ','_','<','','>','',':',' ','/',''])
 		mut optimized_filename := row[column_id].to_lower()
-		text += 'permalink: /use/scenario-' + optimized_filename + '\n'
-		if row[column_published].contains('true')  {
+		text += 'permalink: /scenario-' + optimized_filename + '\n'
+		if row[column_published] != '' {
+			text += 'redirect_from: ' + row[column_redirect] + '\n'
+		}
+		if row[column_published].contains('true') {
 			text += 'published: true\n'
 			description_counter++
 		} else {
 			text += 'published: false\n'
 		}
 
+		match row[column_component] {
+			'App' {
+				text += 'sidebar:
+  - title: "Use Enmeshed"
+    nav: "docs_use"\n'
+			}
+			'Runtime' {
+				text += 'sidebar:
+  - title: "Integrate Enmeshed"
+    nav: "docs_integrate"\n'
+			}
+			'Connector' {
+				text += 'sidebar:
+  - title: "Operate Enmeshed"
+    nav: "docs_operate"\n'
+			}
+			else {
+				println('column not found: ' + row.str())
+			}
+		}
+
 		text += 'title: "' +
 			row[column_title].replace_each(['<', '', '>', '', ':', '', '’', "'"]) + '"\n'
 		text += 'type: scenario\n'
+		text += 'toc: true\n'
 		text += 'properties:\n'
 		for i, cell in row {
-			if i != column_title && i != column_require && i != column_nbp_scenario {
+			if i != column_title && i != column_require && i != column_nbp_scenario
+				&& i != column_jira && i != column_redirect {
 				if cell != '' {
 					text += '  - ' + header[i].to_lower() + ': ' +
 						cell.replace_each(['<', '', '>', '', ':', '', '\n', ' ', '`', "'"]) + '\n'
@@ -80,8 +119,8 @@ fn scenarios_func(app cli.Command) ! {
 			}
 		}
 		text += 'require:\n'
-		for key, value in contingency_table[j] {
-			if value {
+		for key, values in contingency_table[j] {
+			if values {
 				text += '  - ' + name_list[key].my_type + '-' +
 					name_list[key].id.to_lower().replace_each([' ', '_', '<', '', '>', '', ':', ' ', '/', '']) +
 					'\n'
@@ -98,17 +137,60 @@ fn scenarios_func(app cli.Command) ! {
 		text += '---\n'
 		if !os.exists('_includes/scenarios/scenario-' + optimized_filename + '.md') {
 			mut f := os.create('_includes/scenarios/scenario-' + optimized_filename + '.md')!
-			f.write_string(template_file) or { panic('error writing file /scenarios/scenario-' + optimized_filename + '.md') }
+			f.write_string(template_file) or {
+				panic('error writing file /scenarios/scenario-' + optimized_filename + '.md')
+			}
 			f.close()
 		}
-		text += '\n{% include scenarios/scenario-' + optimized_filename + '.md %}'
-		mut tmp_filename := './_docs_use/scenarios-generated/scenario-' + optimized_filename + '.md'
+		text += '\n{% include scenarios/scenario-' + optimized_filename + '.md %}\n'
+		mut tmp_filename := './_requirements/_docs_scenarios/scenario-' + optimized_filename + '.md'
 		mut f := os.create(tmp_filename)!
 		f.write_string(text) or { panic('error writing file ${filename}') }
 		f.close()
 		j++
+
+		if row[column_published] == 'true' || true {
+			match row[column_component] {
+				'App' {
+					add_to_navbar(row[column_category], row[column_title], '/scenario-' +
+						optimized_filename, mut navbar_use)
+				}
+				'Runtime' {
+					add_to_navbar(row[column_category], row[column_title], '/scenario-' +
+						optimized_filename, mut navbar_integrate)
+				}
+				'Connector' {
+					add_to_navbar(row[column_category], row[column_title], '/scenario-' +
+						optimized_filename, mut navbar_operate)
+				}
+				else {
+					println('column not found: ' + row.str())
+				}
+			}
+		}
 	}
-	println('successfully created ${j} files and used ${description_counter} descriptions')
+	sort_array(mut navbar_use)
+	sort_array(mut navbar_integrate)
+	sort_array(mut navbar_operate)
+	println('scenarios: successfully created ${j} files and used ${description_counter} descriptions')
+	mut navbar_text := ''
+	navbar_text += 'docs_use:\n'
+	for key, row in navbar_use.navbar {
+		navbar_text += row
+	}
+	navbar_text += '\ndocs_integrate:\n'
+	for key, row in navbar_integrate.navbar {
+		navbar_text += row
+	}
+	navbar_text += '\ndocs_operate:\n'
+	for key, row in navbar_operate.navbar {
+		navbar_text += row
+	}
+
+	mut navbar_filename := './navbar.md'
+	mut f := os.create(navbar_filename)!
+	f.write_string(navbar_text) or { panic('error writing file ${filename}') }
+	f.close()
 }
 
 fn use_cases_func(app cli.Command) ! {
@@ -127,14 +209,15 @@ fn use_cases_func(app cli.Command) ! {
 	column_require := get_columnn_id_by_title('require', header)
 	column_published := get_columnn_id_by_title('published', header)
 	column_id := get_columnn_id_by_title('id', header)
-		template_file := os.read_file('_docs_explore/use-cases-generated/_template.md') !
+	column_jira := get_columnn_id_by_title('link to jira', header)
+	template_file := os.read_file('_requirements/_docs_use-cases/_template.md')!
 
 	for {
 		row := parser.read() or { break }
 		mut text := '---\n'
 		mut optimized_filename := row[column_id].to_lower()
-		text += 'permalink: /explore/use-case-' + optimized_filename + '\n'
-		if os.exists('_docs_explore/use-cases/use-case-' + optimized_filename + '.md')
+		text += 'permalink: /use-case-' + optimized_filename + '\n'
+		if os.exists('_requirements/_docs_use-cases/use-case-' + optimized_filename + '.md')
 			|| row[column_published].contains('default') {
 			text += 'published: true\n'
 			description_counter++
@@ -145,9 +228,10 @@ fn use_cases_func(app cli.Command) ! {
 		text += 'title: "' +
 			row[column_title].replace_each(['<', '', '>', '', ':', '', '’', "'"]) + '"\n'
 		text += 'type: use-case\n'
+		text += 'toc: true\n'
 		text += 'properties:\n'
 		for i, cell in row {
-			if i != column_title && i != column_require {
+			if i != column_title && i != column_require && i != column_jira {
 				if cell != '' {
 					text += '  - ' + header[i].to_lower() + ': ' +
 						cell.replace_each(['<', '', '>', '', ':', '', '\n', ' ', '`', "'"]) + '\n'
@@ -175,14 +259,15 @@ fn use_cases_func(app cli.Command) ! {
 			}
 		}
 		text += '---\n'
-				if !os.exists('_includes/use-cases/use-case-' + optimized_filename + '.md') {
+		if !os.exists('_includes/use-cases/use-case-' + optimized_filename + '.md') {
 			mut f := os.create('_includes/use-cases/use-case-' + optimized_filename + '.md')!
-			f.write_string(template_file) or { panic('error writing file /use-cases/use-case-' + optimized_filename + '.md') }
+			f.write_string(template_file) or {
+				panic('error writing file /use-cases/use-case-' + optimized_filename + '.md')
+			}
 			f.close()
 		}
-text += '\n{% include use-cases/use-case-' + optimized_filename + '.md %}'
-		mut tmp_filename := './_docs_explore/use-cases-generated/use-case-' + optimized_filename +
-			'.md'
+		text += '\n{% include use-cases/use-case-' + optimized_filename + '.md %}\n'
+		mut tmp_filename := './_requirements/_docs_use-cases/use-case-' + optimized_filename + '.md'
 		mut f := os.create(tmp_filename)!
 		f.write_string(text) or { panic('error writing file ${filename}') }
 		f.close()
@@ -228,7 +313,7 @@ fn find_id_in_array(array []TypeObject, value string) int {
 /**
  * Searches an array of strings for the first occurrence of a specified value and returns its index.
  *
- * @param {string[]} array - The array of strings to search.
+ * @param {TypeObject[]} array - The array of strings to search.
  * @param {string} value - The value to search for in the array.
  * @returns {int} The index of the first occurrence of the specified value in the array, or -1 if not found.
 */
@@ -266,7 +351,7 @@ fn mapper() []TypeObject {
 		obj := TypeObject{
 			id: entry[id]
 			title: entry[title]
-			my_type: '/explore/use-case'
+			my_type: '/use-case'
 		}
 		list << obj
 	}
@@ -284,7 +369,7 @@ fn mapper() []TypeObject {
 		obj := TypeObject{
 			id: entry[id]
 			title: entry[title]
-			my_type: '/use/scenatio'
+			my_type: '/scenario'
 		}
 		list << obj
 	}
@@ -348,4 +433,27 @@ fn create_contingency_table() [][]bool {
 		require_key++
 	}
 	return require_list
+}
+
+fn add_to_navbar(category string, title string, url string, mut navbar Navbar) int {
+	key := category_to_keylist(category, mut navbar)
+	navbar.navbar[key] += '      - title: "' + title + '"\n        url: ' + url + '\n'
+	return 1
+}
+
+fn category_to_keylist(category string, mut navbar Navbar) int {
+	for key, compare_value in navbar.keylist {
+		if compare_strings(compare_value.to_lower(), category.to_lower()) == 0 {
+			return key
+		}
+	}
+	navbar.keylist << category
+	navbar.navbar << '  - title: ' + category + '\n    children:\n'
+	return navbar.keylist.len - 1
+}
+
+fn sort_array(mut navbar Navbar) int {
+	navbar.keylist.sort()
+	navbar.navbar.sort()
+	return 1
 }
