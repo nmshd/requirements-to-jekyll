@@ -1,6 +1,7 @@
 ---
 permalink: /scenario-sc91
-published: false
+redirect_from: /integrate/data-model-request-items
+published: true
 sidebar:
   - title: "Integrate Enmeshed"
     nav: "docs_integrate"
@@ -16,7 +17,7 @@ properties:
   - level:
   - implementation status:
   - documentation status:
-  - published:
+  - published: true
   - link to lucid:
 require:
 required_by:

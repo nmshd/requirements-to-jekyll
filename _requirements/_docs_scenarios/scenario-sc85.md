@@ -1,6 +1,7 @@
 ---
 permalink: /scenario-sc85
-published: false
+redirect_from: /integrate/connector-privacy
+published: true
 sidebar:
   - title: "Operate Enmeshed"
     nav: "docs_operate"
@@ -16,7 +17,7 @@ properties:
   - level:
   - implementation status: DOCS ONLY
   - documentation status:
-  - published:
+  - published: true
   - link to lucid:
 require:
 required_by:

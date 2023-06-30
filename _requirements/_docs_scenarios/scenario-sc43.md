@@ -1,6 +1,7 @@
 ---
 permalink: /scenario-sc43
-published: false
+redirect_from: /integrate/connector-events
+published: true
 sidebar:
   - title: "Integrate Enmeshed"
     nav: "docs_integrate"
@@ -16,7 +17,7 @@ properties:
   - level: Advanced
   - implementation status: DOCS ONLY
   - documentation status: OPEN
-  - published:
+  - published: true
   - link to lucid:
 require:
 required_by:

@@ -1,6 +1,7 @@
 ---
 permalink: /scenario-sc93
-published: false
+redirect_from: /use/basics
+published: true
 sidebar:
   - title: "Use Enmeshed"
     nav: "docs_use"
@@ -16,7 +17,7 @@ properties:
   - level: Beginner
   - implementation status:
   - documentation status:
-  - published:
+  - published: true
   - link to lucid:
 require:
 required_by:
