@@ -60,17 +60,20 @@ fn scenarios_func(app cli.Command) ! {
 	column_redirect := get_columnn_id_by_title('redirect_from', header)
 	column_category := get_columnn_id_by_title('category', header)
 	column_component := get_columnn_id_by_title('component', header)
-	template_file := os.read_file('_requirements/_docs_scenarios/_template.md')!
+	column_link := get_columnn_id_by_title('link', header)
+
+	// template_file := os.read_file('_requirements/_docs_scenarios/_template.md')!
 	mut navbar_use := Navbar{}
 	mut navbar_integrate := Navbar{}
 	mut navbar_operate := Navbar{}
 	for {
 		row := parser.read() or { break }
+
 		j = find_title_in_array(name_list, row[column_title])
 		mut text := '---\n'
-		// mut optimized_filename := row[column_title].to_lower().replace_each([' ','_','<','','>','',':',' ','/',''])
-		mut optimized_filename := row[column_id].to_lower()
-		text += 'permalink: /scenario-' + optimized_filename + '\n'
+		//mut optimized_filename := row[column_link].to_lower().replace_each([' ','_','<','','>','',':',' ','/','-'])
+		mut optimized_filename := row[column_link].to_lower()
+		text += 'permalink: ' + row[column_link] + '\n'
 		if row[column_published] != '' {
 			text += 'redirect_from: ' + row[column_redirect] + '\n'
 		}
@@ -135,21 +138,17 @@ fn scenarios_func(app cli.Command) ! {
 			}
 		}
 		text += '---\n'
-		if !os.exists('_includes/scenarios/scenario-' + optimized_filename + '.md') {
-			mut f := os.create('_includes/scenarios/scenario-' + optimized_filename + '.md')!
-			f.write_string(template_file) or {
-				panic('error writing file /scenarios/scenario-' + optimized_filename + '.md')
-			}
-			f.close()
-		}
-		text += '\n{% include scenarios/scenario-' + optimized_filename + '.md %}\n'
-		mut tmp_filename := './_requirements/_docs_scenarios/scenario-' + optimized_filename + '.md'
+		text += '\n{% include scenarios/' + optimized_filename + '.md %}\n'
+		mut tmp_filename := './_requirements/_docs_scenarios/' + optimized_filename + '.md'
+						println('ERRROROROROROR' + tmp_filename)
+
 		mut f := os.create(tmp_filename)!
+
 		f.write_string(text) or { panic('error writing file ${filename}') }
 		f.close()
 		j++
 
-		if row[column_published] == 'true' || true {
+		if row[column_published] == 'true' {
 			match row[column_component] {
 				'App' {
 					add_to_navbar(row[column_category], row[column_title], '/scenario-' +
@@ -175,15 +174,15 @@ fn scenarios_func(app cli.Command) ! {
 	println('scenarios: successfully created ${j} files and used ${description_counter} descriptions')
 	mut navbar_text := ''
 	navbar_text += 'docs_use:\n'
-	for key, row in navbar_use.navbar {
+	for row in navbar_use.navbar {
 		navbar_text += row
 	}
 	navbar_text += '\ndocs_integrate:\n'
-	for key, row in navbar_integrate.navbar {
+	for row in navbar_integrate.navbar {
 		navbar_text += row
 	}
 	navbar_text += '\ndocs_operate:\n'
-	for key, row in navbar_operate.navbar {
+	for row in navbar_operate.navbar {
 		navbar_text += row
 	}
 
@@ -210,7 +209,7 @@ fn use_cases_func(app cli.Command) ! {
 	column_published := get_columnn_id_by_title('published', header)
 	column_id := get_columnn_id_by_title('id', header)
 	column_jira := get_columnn_id_by_title('link to jira', header)
-	template_file := os.read_file('_requirements/_docs_use-cases/_template.md')!
+	// template_file := os.read_file('_requirements/_docs_use-cases/_template.md')!
 
 	for {
 		row := parser.read() or { break }
@@ -259,13 +258,6 @@ fn use_cases_func(app cli.Command) ! {
 			}
 		}
 		text += '---\n'
-		if !os.exists('_includes/use-cases/use-case-' + optimized_filename + '.md') {
-			mut f := os.create('_includes/use-cases/use-case-' + optimized_filename + '.md')!
-			f.write_string(template_file) or {
-				panic('error writing file /use-cases/use-case-' + optimized_filename + '.md')
-			}
-			f.close()
-		}
 		text += '\n{% include use-cases/use-case-' + optimized_filename + '.md %}\n'
 		mut tmp_filename := './_requirements/_docs_use-cases/use-case-' + optimized_filename + '.md'
 		mut f := os.create(tmp_filename)!
